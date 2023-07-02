@@ -1,19 +1,22 @@
 require("dotenv").config();
-require("./database/sync-db");
+// require("./database/sync-db");
 
 const express = require("express");
 const cors = require("cors");
 
 const serverConfig = require("./configs/server-config");
 const sequelize = require("./database/db-connection.js");
+const userRouter = require("./routes/user-routers");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
+app.use("/api/users", userRouter);
+
 sequelize
-  .sync({ alter: true })
+  .sync({ force: true })
   .then(() => {
     console.log("database synced successfully.....");
 
